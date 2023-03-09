@@ -164,35 +164,43 @@ setInterval(hideAllCards, interval);
   let element = event.target;
   // Check if the clicked element was an image
   if (element.matches("img")) {
-
-
-            //check if a matching pair has being flipped
-            if (cardsFlipped==2) {
-              attempts--;
-              updateScoreboard(attempts);
-              if (attempts==0){
-                window.alert("Better luck next time!");
-                location.reload();
-                return;
-              }
-              // select cards showing and switch them to 'paired' data type if a match
-              let selectAllCardsShowing = document.querySelectorAll("img[data-state='showing']");
-              if(selectAllCardsShowing[0].src == selectAllCardsShowing[1].src) {
-                paired(selectAllCardsShowing[0],selectAllCardsShowing[1]);
-                cardsFlipped=0;
-              }
-              // reselect all cards showing (now minus matches) and hide them 
-              selectAllCardsShowing = document.querySelectorAll("img[data-state='showing']");
-              for (let i= 0; i < selectAllCardsShowing.length; i++) {
-                hide(selectAllCardsShowing[i]);
-                cardsFlipped=0;
-              }
-            }
   
+    // https://stackoverflow.com/questions/8635502/how-do-i-clear-all-intervals
+    // Get a reference to the last interval + 1
+    const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
+
+    // Clear any timeout/interval up to that id
+    for (let i = 1; i < interval_id; i++) {
+    window.clearInterval(i);
+  }
+
+
     if (element.getAttribute("data-state")== cardstate.hidden) {
       uncover(element);
       cardsFlipped++;
     }
+                //check if a matching pair has being flipped
+                if (cardsFlipped==2) {
+                  attempts--;
+                  updateScoreboard(attempts);
+                  if (attempts==0){
+                    window.alert("Better luck next time!");
+                    location.reload();
+                    return;
+                  }
+                  // select cards showing and switch them to 'paired' data type if a match
+                  let selectAllCardsShowing = document.querySelectorAll("img[data-state='showing']");
+                  if(selectAllCardsShowing[0].src == selectAllCardsShowing[1].src) {
+                    paired(selectAllCardsShowing[0],selectAllCardsShowing[1]);
+                    cardsFlipped=0;
+                  }
+                  // reselect all cards showing (now minus matches) and hide them 
+                  selectAllCardsShowing = document.querySelectorAll("img[data-state='showing']");
+                  for (let i= 0; i < selectAllCardsShowing.length; i++) {
+                    hide(selectAllCardsShowing[i]);
+                    cardsFlipped=0;
+                  }
+                }
 
   }
 });
